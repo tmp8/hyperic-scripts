@@ -3,15 +3,20 @@
 begin
   require 'time'
   backup = ARGV[0]
-  duply_output = `duply #{backup} status`
+  ls_output = `ls -at /root/.duply-cache/duply_#{backup}`
 
-  time_string = duply_output =~ /Chain end time:\s(.*?)$/m && $1
+  time_string = ls_output =~ /.*#{backup}.*\.(.+?)Z/m && $1
+  
+  puts Time.parse(time_string)
   
   if Time.parse(time_string) > (Time.now - 60*60*24)
+    puts 'ok'
     exit 0 # OK
   else
+    puts 'critical'
     exit 2 # Critical
   end
-rescue
+rescue => e
+  p e
   exit 3 # Unknown
 end
