@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+
+begin
+  require 'time'
+  backup = ARGV[0]
+  duply_output = `duply #{backup} status`
+
+  time_string = duply_output =~ /Chain end time:\s(.*?)$/m && $1
+  
+  if Time.parse(time_string) > (Time.now - 60*60*24)
+    exit 0 # OK
+  else
+    exit 2 # Critical
+  end
+rescue
+  exit 3 # Unknown
+end
