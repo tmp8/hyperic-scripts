@@ -5,7 +5,7 @@ begin
   backup = ARGV[0]
   ls_output = `ls -at /root/.duply-cache/duply_#{backup}`
 
-  time_string = ls_output =~ /.*#{backup}.*\.(.+?)Z/m && $1
+  time_string = ls_output =~ /\.(.+?)Z/m && $1
   
   puts Time.parse(time_string)
   
