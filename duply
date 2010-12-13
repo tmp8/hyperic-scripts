@@ -5,15 +5,11 @@ begin
   backup = ARGV[0]
   ls_output = `ls -at /root/.duply-cache/duply_#{backup}`
 
-  time_string = ls_output =~ /\.(.+?)Z/m && $1
-  
-  puts Time.parse(time_string)
+  time_string = ls_output =~ /to\.(.+?)Z/m && $1
   
   if Time.parse(time_string) > (Time.now - 60*60*24)
-    puts 'ok'
     exit 0 # OK
   else
-    puts 'critical'
     exit 2 # Critical
   end
 rescue => e
