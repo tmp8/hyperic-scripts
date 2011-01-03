@@ -7,7 +7,7 @@ begin
 
   time_string = ls_output =~ /to\.(.+?)Z/m && $1
   
-  if Time.parse(time_string) > (Time.now - 60*60*24)
+  if Time.parse(time_string) > (Time.now - 60*60*30)
     exit 0 # OK
   else
     exit 2 # Critical

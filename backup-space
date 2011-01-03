@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+
+begin
+  host = ARGV[0]
+  df_output = `echo "df" | sftp #{host}`
+  size = df_output =~ /(\d+)%/ && $1
+  
+  if size
+    puts size
+    exit 0 # OK
+  else
+    exit 2 # Critical
+  end
+rescue => e
+  p e
+  exit 3 # Unknown
+end
