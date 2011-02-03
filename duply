@@ -2,16 +2,12 @@
 
 begin
   require 'time'
-  backup = ARGV[0]
-  ls_output = `ls -at /root/.duply-cache/duply_#{backup}`
-
-  time_string = ls_output =~ /to\.(.+?)Z/m && $1
   
-  if Time.parse(time_string) > (Time.now - 60*60*30)
-    exit 0 # OK
-  else
-    exit 2 # Critical
-  end
+  ls_output = `ls -at /root/.duply-cache/duply_#{ARGV[0]}/*.manifest`
+  time_string = ls_output =~ /\.([T\d]+?)Z\.manifest/m && $1
+
+  puts Time.now.to_i - Time.parse(time_string).to_i
+  exit 0 # OK
 rescue => e
   p e
   exit 3 # Unknown
